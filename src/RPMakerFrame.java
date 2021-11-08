@@ -1,4 +1,3 @@
-import javax.management.Descriptor;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -45,7 +44,9 @@ public class RPMakerFrame extends JFrame {
     String NameStr;
     String DescStr;
     String IDStr;
-
+    String CostStr;
+    double CostDbl;
+    Product newProduct;
 
     public RPMakerFrame() throws HeadlessException {
         //Create the main panel and the title
@@ -82,7 +83,8 @@ public class RPMakerFrame extends JFrame {
         IDField = new JTextField(6);
         IDField.setDocument(new JTextFieldLimit(6));
         IDLabel = new JLabel("ID:");
-        CostField = new JTextField(10);
+        CostField = new JTextField(7);
+        CostField.setColumns(7);
         CostField.setDocument(new JTextFieldLimit(10));
         CostLabel = new JLabel("Cost:");
         RecField = new JTextField(String.valueOf(RecordsAdded), 3);
@@ -122,18 +124,37 @@ public class RPMakerFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             //Get string and make it proper length
+            IDStr = IDField.getText();
+            while (IDStr.length() < 6){
+                IDStr = IDStr + " ";
+            }
+
             NameStr = NameField.getText();
             while (NameStr.length() < 35){
                 NameStr = NameStr + " ";
-
             }
 
-            //test output
-            System.out.println(NameStr + " " + NameStr.length());
+            DescStr = DescField.getText();
+            while (DescStr.length() < 75){
+                DescStr = DescStr + " ";
+            }
 
-            //Add Record to counter
+            CostStr = CostField.getText();
+            CostDbl = Double.valueOf(CostStr);
+
+            //test output
+            newProduct = new Product(IDStr,NameStr,DescStr,CostDbl);
+            System.out.println(IDStr + "," + NameStr + "," + DescStr + "," + CostDbl);
+            System.out.println(newProduct.toCSVDataRecord());
+
+            //Add Record to counter and reset text fields
             RecordsAdded++;
             RecField.setText(String.valueOf(RecordsAdded));
+            IDField.setText("");
+            NameField.setText("");
+            DescField.setText("");
+            CostField.setText("");
+
         }
     }
 }
